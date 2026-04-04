@@ -1,0 +1,10 @@
+{
+  "name": "Golf Livescoring",
+  "short_name": "Golf Live",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1a0f",
+  "theme_color": "#0b1a0f",
+  "description": "Golf Turnier Livescoring mit Echtzeit-Updates",
+  "icons": []
+}
