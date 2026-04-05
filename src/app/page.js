@@ -22,7 +22,8 @@ const DAYS = [1, 2, 3, 4];
 
 // Punkte-Berechnung
 function calcPoints(strokes, par) {
-  if (strokes <= par - 1) return 3; // Birdie oder besser
+  if (strokes <= par - 2) return 4; // Eagle oder besser
+  if (strokes === par - 1) return 3; // Birdie
   if (strokes === par) return 2;     // Par
   if (strokes === par + 1) return 1; // Bogey
   return 0;                           // Doppelbogey+
@@ -40,7 +41,7 @@ function strokeLabel(strokes, par) {
 }
 
 function pointColor(pts) {
-  return pts === 3 ? "#3498db" : pts === 2 ? "#2ecc71" : pts === 1 ? "#e67e22" : "#636e72";
+  return pts === 4 ? "#9b59b6" : pts === 3 ? "#3498db" : pts === 2 ? "#2ecc71" : pts === 1 ? "#e67e22" : "#636e72";
 }
 
 function resultColor(strokes, par) {
@@ -419,7 +420,7 @@ export default function GolfLiveScoring() {
                     const pts = calcPoints(v, par);
                     const sel = strokes === v;
                     const cat =
-                      pts === 3 ? (v <= par - 2 ? "eagle" : "birdie") : pts === 2 ? "par" : pts === 1 ? "bogey" : "dblbogey";
+                      pts === 4 ? "eagle" : pts === 3 ? "birdie" : pts === 2 ? "par" : pts === 1 ? "bogey" : "dblbogey";
                     return (
                       <button
                         key={v}
@@ -683,7 +684,7 @@ export default function GolfLiveScoring() {
                                   s.hole === h
                               );
                               const cls = e
-                                ? (e.strokes <= e.par - 2)
+                                ? e.points === 4
                                   ? "eagle"
                                   : e.points === 3
                                     ? "birdie"
@@ -707,7 +708,7 @@ export default function GolfLiveScoring() {
                                   s.hole === h
                               );
                               const cls = e
-                                ? (e.strokes <= e.par - 2)
+                                ? e.points === 4
                                   ? "eagle"
                                   : e.points === 3
                                     ? "birdie"
