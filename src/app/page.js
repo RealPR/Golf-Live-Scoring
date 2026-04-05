@@ -5,16 +5,19 @@ import { supabase } from "@/lib/supabase";
 
 // ── CONFIG ──────────────────────────────────────────────────────────────
 const PLAYERS = [
-  "Patrick", "Spieler 2", "Spieler 3", "Spieler 4",
-  "Spieler 5", "Spieler 6", "Spieler 7",
+  "Patrick", "Lennart", "Julian", "Kiki",
+  "Joshi", "Daniel", "Ferdi",
 ];
 
-// Par pro Loch (Par 72 gesamt) — an euren Platz anpassen!
-const PAR_DATA = [
-  4, 3, 5, 4, 4, 3, 4, 5, 4, // Front 9 (Par 36)
-  4, 4, 3, 5, 4, 4, 3, 4, 5, // Back 9 (Par 36)
-];
-const TOTAL_PAR = PAR_DATA.reduce((a, b) => a + b, 0);
+// Par pro Loch pro Tag — an eure 4 Plätze anpassen!
+const COURSES = {
+  1: { name: "Platz 1", par: [4, 3, 5, 4, 4, 3, 4, 5, 4, 4, 4, 3, 5, 4, 4, 3, 4, 5] },
+  2: { name: "Platz 2", par: [4, 4, 3, 5, 4, 3, 4, 5, 4, 4, 3, 4, 5, 4, 4, 3, 5, 4] },
+  3: { name: "Platz 3", par: [4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 4, 3, 4, 5, 4, 3, 4, 5] },
+  4: { name: "Platz 4", par: [4, 5, 3, 4, 4, 4, 3, 5, 4, 4, 3, 5, 4, 4, 3, 4, 5, 4] },
+};
+const getParData = (day) => COURSES[day].par;
+const getTotalPar = (day) => COURSES[day].par.reduce((a, b) => a + b, 0);
 const DAYS = [1, 2, 3, 4];
 
 // Punkte-Berechnung
@@ -142,7 +145,7 @@ export default function GolfLiveScoring() {
   const existing = scores.find(
     (s) => s.day === day && s.player === player && s.hole === hole
   );
-  const par = PAR_DATA[hole - 1];
+  const par = getParData(day)[hole - 1];
   const preview =
     strokes !== null
       ? { pts: calcPoints(strokes, par), label: strokeLabel(strokes, par) }
@@ -281,7 +284,7 @@ export default function GolfLiveScoring() {
             Live Scoring
             <span className="live-dot" title={online ? "Verbunden" : "Offline"} />
           </h1>
-          <p>4 Tage · 7 Spieler · Par {TOTAL_PAR}</p>
+          <p>4 Tage · 7 Spieler · {COURSES[day].name} (Par {getTotalPar(day)})</p>
         </div>
       </header>
 
@@ -652,14 +655,14 @@ export default function GolfLiveScoring() {
                 <tbody>
                   {Array.from({ length: 18 }, (_, i) => {
                     const h = i + 1;
-                    const p = PAR_DATA[i];
+                    const p = scDay > 0 ? getParData(scDay)[i] : null;
                     return (
                       <tr
                         key={h}
                         className={h === 10 ? "break-row" : ""}
                       >
                         <td>{h}</td>
-                        <td className="muted-cell">{p}</td>
+                        <td className="muted-cell">{p !== null ? p : "–"}</td>
                         {scDay === 0
                           ? DAYS.map((d) => {
                               const e = scores.find(
@@ -711,7 +714,7 @@ export default function GolfLiveScoring() {
                   })}
                   <tr className="total-row">
                     <td>Σ</td>
-                    <td>{TOTAL_PAR}</td>
+                    <td>{scDay > 0 ? getTotalPar(scDay) : "–"}</td>
                     {scDay === 0
                       ? DAYS.map((d) => {
                           const ds = scores.filter(
