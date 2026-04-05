@@ -62,6 +62,10 @@ export default function GolfLiveScoring() {
   const [loading, setLoading] = useState(true);
   const [online, setOnline] = useState(true);
 
+  // Spieler-Erkennung (wird im Browser gespeichert)
+  const [myPlayer, setMyPlayer] = useState(null);
+  const [playerReady, setPlayerReady] = useState(false);
+
   // Live scoring
   const [day, setDay] = useState(1);
   const [player, setPlayer] = useState(PLAYERS[0]);
@@ -77,6 +81,27 @@ export default function GolfLiveScoring() {
   const [scDay, setScDay] = useState(0);
 
   const toastTimer = useRef(null);
+
+  // ── SPIELER-ERKENNUNG ───────────────────────────────────────────────
+  useEffect(() => {
+    const saved = localStorage.getItem("golf-my-player");
+    if (saved && PLAYERS.includes(saved)) {
+      setMyPlayer(saved);
+      setPlayer(saved);
+    }
+    setPlayerReady(true);
+  }, []);
+
+  const selectMyPlayer = (name) => {
+    localStorage.setItem("golf-my-player", name);
+    setMyPlayer(name);
+    setPlayer(name);
+  };
+
+  const changeMyPlayer = () => {
+    localStorage.removeItem("golf-my-player");
+    setMyPlayer(null);
+  };
 
   // ── TOAST ─────────────────────────────────────────────────────────────
   const flash = useCallback((msg, type = "ok") => {
@@ -272,11 +297,38 @@ export default function GolfLiveScoring() {
   ).length;
 
   // ── LOADING ───────────────────────────────────────────────────────────
-  if (loading)
+  if (loading || !playerReady)
     return (
       <div className="loading-screen">
         <div className="loading-spinner">⛳</div>
         <div>Verbinde mit Supabase...</div>
+      </div>
+    );
+
+  // ── SPIELER-AUSWAHL (einmalig pro Gerät) ─────────────────────────────
+  if (!myPlayer)
+    return (
+      <div className="loading-screen" style={{ gap: 16 }}>
+        <div style={{ fontSize: 40 }}>⛳</div>
+        <div style={{ fontSize: 20, fontWeight: 800 }}>Wer bist du?</div>
+        <div style={{ fontSize: 13, color: "#7a9a82", marginBottom: 8 }}>Wird auf diesem Gerät gespeichert</div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, width: "100%", maxWidth: 300 }}>
+          {PLAYERS.map((p) => (
+            <button
+              key={p}
+              onClick={() => selectMyPlayer(p)}
+              style={{
+                padding: "14px 20px", borderRadius: 12,
+                border: "1px solid #1e3826", background: "#14261a",
+                color: "#eef3ef", fontSize: 16, fontWeight: 700,
+                cursor: "pointer", fontFamily: "inherit",
+                transition: "all 0.15s",
+              }}
+            >
+              {p}
+            </button>
+          ))}
+        </div>
       </div>
     );
 
@@ -782,9 +834,13 @@ export default function GolfLiveScoring() {
       {/* Footer */}
       <footer className="footer">
         <span>
-          {scores.length} Scores ·{" "}
+          {myPlayer} ·{" "}
           <span style={{ color: online ? "var(--green)" : "var(--danger)" }}>
             {online ? "● Live" : "○ Offline"}
+          </span>
+          {" · "}
+          <span onClick={changeMyPlayer} style={{ textDecoration: "underline", cursor: "pointer" }}>
+            wechseln
           </span>
         </span>
         <button className="reset-btn" onClick={resetPlayer}>
