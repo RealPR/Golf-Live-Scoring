@@ -11,10 +11,10 @@ const PLAYERS = [
 
 // Par pro Loch pro Tag — an eure 4 Plätze anpassen!
 const COURSES = {
-  1: { name: "Platz 1", par: [4, 3, 5, 4, 4, 3, 4, 5, 4, 4, 4, 3, 5, 4, 4, 3, 4, 5] },
-  2: { name: "Platz 2", par: [4, 4, 3, 5, 4, 3, 4, 5, 4, 4, 3, 4, 5, 4, 4, 3, 5, 4] },
-  3: { name: "Platz 3", par: [4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 4, 3, 4, 5, 4, 3, 4, 5] },
-  4: { name: "Platz 4", par: [4, 5, 3, 4, 4, 4, 3, 5, 4, 4, 3, 5, 4, 4, 3, 4, 5, 4] },
+  1: { name: "Hohwacht", par: [4, 4, 3, 4, 5, 4, 4, 3, 5, 4, 5, 3, 5, 4, 3, 4, 5, 4] },
+  2: { name: "Brodauer", par: [4, 3, 5, 5, 4, 3, 4, 4, 4, 4, 4, 5, 3, 4, 3, 4, 5, 4] },
+  3: { name: "Fehmarn", par: [4, 3, 5, 3, 3, 5, 4, 5, 3, 5, 4, 4, 5, 4, 3, 4, 3, 5] },
+  4: { name: "Timmendorf", par: [4, 5, 3, 4, 4, 3, 4, 5, 4, 4, 5, 3, 4, 4, 5, 4, 3, 4] },
 };
 const getParData = (day) => COURSES[day].par;
 const getTotalPar = (day) => COURSES[day].par.reduce((a, b) => a + b, 0);
