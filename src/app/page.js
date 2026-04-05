@@ -22,9 +22,10 @@ const DAYS = [1, 2, 3, 4];
 
 // Punkte-Berechnung
 function calcPoints(strokes, par) {
-  if (strokes <= par - 1) return 2; // Birdie oder besser
-  if (strokes === par) return 1;     // Par
-  return 0;                           // Bogey+
+  if (strokes <= par - 1) return 3; // Birdie oder besser
+  if (strokes === par) return 2;     // Par
+  if (strokes === par + 1) return 1; // Bogey
+  return 0;                           // Doppelbogey+
 }
 
 function strokeLabel(strokes, par) {
@@ -39,7 +40,7 @@ function strokeLabel(strokes, par) {
 }
 
 function pointColor(pts) {
-  return pts === 2 ? "var(--green)" : pts === 1 ? "var(--blue)" : "#636e72";
+  return pts === 3 ? "#3498db" : pts === 2 ? "#2ecc71" : pts === 1 ? "#e67e22" : "#636e72";
 }
 
 const MEDALS = ["🥇", "🥈", "🥉"];
@@ -409,7 +410,7 @@ export default function GolfLiveScoring() {
                     const pts = calcPoints(v, par);
                     const sel = strokes === v;
                     const cat =
-                      pts === 2 ? "birdie" : pts === 1 ? "par" : "bogey";
+                      pts === 3 ? "birdie" : pts === 2 ? "par" : pts === 1 ? "bogey" : "bogey";
                     return (
                       <button
                         key={v}
@@ -426,7 +427,7 @@ export default function GolfLiveScoring() {
                           style={{
                             background: sel
                               ? "rgba(255,255,255,0.25)"
-                              : `${pts === 2 ? "#2ecc71" : pts === 1 ? "#3498db" : "#636e72"}22`,
+                              : `${pts === 3 ? "#3498db" : pts === 2 ? "#2ecc71" : pts === 1 ? "#e67e22" : "#636e72"}22`,
                             color: sel ? "#fff" : undefined,
                           }}
                         >
@@ -449,7 +450,7 @@ export default function GolfLiveScoring() {
                     <span className="arrow">=</span>
                     <span
                       className="pts-badge"
-                      style={{ background: preview.pts === 2 ? "#2ecc71" : preview.pts === 1 ? "#3498db" : "#636e72" }}
+                      style={{ background: preview.pts === 3 ? "#3498db" : preview.pts === 2 ? "#2ecc71" : preview.pts === 1 ? "#e67e22" : "#636e72" }}
                     >
                       {preview.pts} Pkt
                     </span>
@@ -490,11 +491,13 @@ export default function GolfLiveScoring() {
                         className="pts-dot"
                         style={{
                           background:
-                            s.points === 2
-                              ? "#2ecc71"
-                              : s.points === 1
-                                ? "#3498db"
-                                : "#636e72",
+                            s.points === 3
+                              ? "#3498db"
+                              : s.points === 2
+                                ? "#2ecc71"
+                                : s.points === 1
+                                  ? "#e67e22"
+                                  : "#636e72",
                         }}
                       >
                         {s.points}
@@ -678,11 +681,13 @@ export default function GolfLiveScoring() {
                                   s.hole === h
                               );
                               const cls = e
-                                ? e.points === 2
+                                ? e.points === 3
                                   ? "birdie"
-                                  : e.points === 1
+                                  : e.points === 2
                                     ? "par-cell"
-                                    : "bogey-cell"
+                                    : e.points === 1
+                                      ? "bogey-cell"
+                                      : "bogey-cell"
                                 : "muted-cell";
                               return (
                                 <td key={d} className={cls}>
@@ -698,11 +703,13 @@ export default function GolfLiveScoring() {
                                   s.hole === h
                               );
                               const cls = e
-                                ? e.points === 2
+                                ? e.points === 3
                                   ? "birdie"
-                                  : e.points === 1
+                                  : e.points === 2
                                     ? "par-cell"
-                                    : "bogey-cell"
+                                    : e.points === 1
+                                      ? "bogey-cell"
+                                      : "bogey-cell"
                                 : "muted-cell";
                               return (
                                 <>
