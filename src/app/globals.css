@@ -149,6 +149,7 @@ body {
 .s-btn.birdie { background: rgba(52,152,219,0.12); border-color: rgba(52,152,219,0.4); color: var(--blue); }
 .s-btn.par    { background: rgba(46,204,113,0.10); border-color: rgba(46,204,113,0.35); color: var(--green); }
 .s-btn.bogey  { background: rgba(230,126,34,0.10); border-color: rgba(230,126,34,0.3); color: var(--orange); }
+.s-btn.dblbogey { background: rgba(99,110,114,0.08); border-color: rgba(99,110,114,0.22); color: #b2bec3; }
 .s-btn.selected {
   transform: scale(1.1);
   box-shadow: 0 4px 20px rgba(46,204,113,0.3);
@@ -157,6 +158,7 @@ body {
 .s-btn.selected.birdie { background: var(--blue); color: #fff; border-color: var(--blue); }
 .s-btn.selected.par    { background: var(--green); color: #fff; border-color: var(--green); }
 .s-btn.selected.bogey  { background: var(--orange); color: #fff; border-color: var(--orange); }
+.s-btn.selected.dblbogey { background: #636e72; color: #fff; border-color: #636e72; }
 
 /* ── Confirm ─────────────────────────────── */
 .confirm-box {
@@ -250,6 +252,7 @@ body {
 .tbl td.birdie { color: var(--blue); background: rgba(52,152,219,0.08); font-weight: 700; }
 .tbl td.par-cell { color: var(--green); font-weight: 700; }
 .tbl td.bogey-cell { color: var(--orange); font-weight: 600; }
+.tbl td.dblbogey-cell { color: #b2bec3; font-weight: 600; }
 .tbl td.muted-cell { color: #4a5a4e; }
 .tbl tr.break-row { border-top: 2px solid var(--border); }
 .tbl tr.total-row { background: rgba(255,255,255,0.04); }

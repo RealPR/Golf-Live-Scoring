@@ -419,7 +419,7 @@ export default function GolfLiveScoring() {
                     const pts = calcPoints(v, par);
                     const sel = strokes === v;
                     const cat =
-                      pts === 3 ? (v <= par - 2 ? "eagle" : "birdie") : pts === 2 ? "par" : pts === 1 ? "bogey" : "bogey";
+                      pts === 3 ? (v <= par - 2 ? "eagle" : "birdie") : pts === 2 ? "par" : pts === 1 ? "bogey" : "dblbogey";
                     return (
                       <button
                         key={v}
@@ -691,7 +691,7 @@ export default function GolfLiveScoring() {
                                       ? "par-cell"
                                       : e.points === 1
                                         ? "bogey-cell"
-                                        : "bogey-cell"
+                                        : "dblbogey-cell"
                                 : "muted-cell";
                               return (
                                 <td key={d} className={cls}>
@@ -715,7 +715,7 @@ export default function GolfLiveScoring() {
                                       ? "par-cell"
                                       : e.points === 1
                                         ? "bogey-cell"
-                                        : "bogey-cell"
+                                        : "dblbogey-cell"
                                 : "muted-cell";
                               return (
                                 <>
