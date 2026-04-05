@@ -43,6 +43,15 @@ function pointColor(pts) {
   return pts === 3 ? "#3498db" : pts === 2 ? "#2ecc71" : pts === 1 ? "#e67e22" : "#636e72";
 }
 
+function resultColor(strokes, par) {
+  const d = strokes - par;
+  if (d <= -2) return "#9b59b6"; // Eagle+ = lila
+  if (d === -1) return "#3498db"; // Birdie = blau
+  if (d === 0) return "#2ecc71";  // Par = grün
+  if (d === 1) return "#e67e22";  // Bogey = orange
+  return "#636e72";                // Dbl Bogey+ = grau
+}
+
 const MEDALS = ["🥇", "🥈", "🥉"];
 
 // ── MAIN COMPONENT ──────────────────────────────────────────────────────
@@ -410,7 +419,7 @@ export default function GolfLiveScoring() {
                     const pts = calcPoints(v, par);
                     const sel = strokes === v;
                     const cat =
-                      pts === 3 ? "birdie" : pts === 2 ? "par" : pts === 1 ? "bogey" : "bogey";
+                      pts === 3 ? (v <= par - 2 ? "eagle" : "birdie") : pts === 2 ? "par" : pts === 1 ? "bogey" : "bogey";
                     return (
                       <button
                         key={v}
@@ -427,7 +436,7 @@ export default function GolfLiveScoring() {
                           style={{
                             background: sel
                               ? "rgba(255,255,255,0.25)"
-                              : `${pts === 3 ? "#3498db" : pts === 2 ? "#2ecc71" : pts === 1 ? "#e67e22" : "#636e72"}22`,
+                              : `${resultColor(v, par)}22`,
                             color: sel ? "#fff" : undefined,
                           }}
                         >
@@ -450,7 +459,7 @@ export default function GolfLiveScoring() {
                     <span className="arrow">=</span>
                     <span
                       className="pts-badge"
-                      style={{ background: preview.pts === 3 ? "#3498db" : preview.pts === 2 ? "#2ecc71" : preview.pts === 1 ? "#e67e22" : "#636e72" }}
+                      style={{ background: resultColor(strokes, par) }}
                     >
                       {preview.pts} Pkt
                     </span>
@@ -490,14 +499,7 @@ export default function GolfLiveScoring() {
                       <span
                         className="pts-dot"
                         style={{
-                          background:
-                            s.points === 3
-                              ? "#3498db"
-                              : s.points === 2
-                                ? "#2ecc71"
-                                : s.points === 1
-                                  ? "#e67e22"
-                                  : "#636e72",
+                          background: resultColor(s.strokes, s.par),
                         }}
                       >
                         {s.points}
@@ -681,13 +683,15 @@ export default function GolfLiveScoring() {
                                   s.hole === h
                               );
                               const cls = e
-                                ? e.points === 3
-                                  ? "birdie"
-                                  : e.points === 2
-                                    ? "par-cell"
-                                    : e.points === 1
-                                      ? "bogey-cell"
-                                      : "bogey-cell"
+                                ? (e.strokes <= e.par - 2)
+                                  ? "eagle"
+                                  : e.points === 3
+                                    ? "birdie"
+                                    : e.points === 2
+                                      ? "par-cell"
+                                      : e.points === 1
+                                        ? "bogey-cell"
+                                        : "bogey-cell"
                                 : "muted-cell";
                               return (
                                 <td key={d} className={cls}>
@@ -703,13 +707,15 @@ export default function GolfLiveScoring() {
                                   s.hole === h
                               );
                               const cls = e
-                                ? e.points === 3
-                                  ? "birdie"
-                                  : e.points === 2
-                                    ? "par-cell"
-                                    : e.points === 1
-                                      ? "bogey-cell"
-                                      : "bogey-cell"
+                                ? (e.strokes <= e.par - 2)
+                                  ? "eagle"
+                                  : e.points === 3
+                                    ? "birdie"
+                                    : e.points === 2
+                                      ? "par-cell"
+                                      : e.points === 1
+                                        ? "bogey-cell"
+                                        : "bogey-cell"
                                 : "muted-cell";
                               return (
                                 <>
