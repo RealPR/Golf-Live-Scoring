@@ -203,13 +203,19 @@ export default function GolfLiveScoring() {
     [flash]
   );
 
-  const resetAll = useCallback(async () => {
-    if (!confirm("Wirklich ALLE Scores löschen? Das kann nicht rückgängig gemacht werden."))
+  const resetPlayer = useCallback(async () => {
+    const input = prompt(`Alle Scores von "${player}" löschen?\n\nTippe RESET zur Bestätigung:`);
+    if (input !== "RESET") {
+      if (input !== null) flash("Abgebrochen — tippe exakt RESET", "err");
       return;
-    const { error } = await supabase.from("scores").delete().gte("id", 0);
-    if (error) flash("Fehler", "err");
-    else flash("Alle Scores gelöscht", "err");
-  }, [flash]);
+    }
+    const { error } = await supabase
+      .from("scores")
+      .delete()
+      .eq("player", player);
+    if (error) flash("Fehler beim Löschen", "err");
+    else flash(`Alle Scores von ${player} gelöscht`, "err");
+  }, [player, flash]);
 
   // ── LEADERBOARD CALC ──────────────────────────────────────────────────
   const dayBoard = useCallback(
@@ -767,8 +773,8 @@ export default function GolfLiveScoring() {
             {online ? "● Live" : "○ Offline"}
           </span>
         </span>
-        <button className="reset-btn" onClick={resetAll}>
-          Reset
+        <button className="reset-btn" onClick={resetPlayer}>
+          Reset {player}
         </button>
       </footer>
     </>
