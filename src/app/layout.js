@@ -3,9 +3,15 @@ import "./globals.css";
 export const metadata = {
   title: "Golf Livescoring",
   description: "4-Tage-Turnier · 7 Spieler · Realtime",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
-  themeColor: "#0b1a0f",
   manifest: "/manifest.json",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: "#0b1a0f",
 };
 
 export default function RootLayout({ children }) {
